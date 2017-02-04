@@ -697,15 +697,11 @@ void launch_options_controls(std::fstream& file, const sf::Texture& menu_backgro
 
     /*Images*/
     sf::Texture go_back;
-    sf::Texture wii;
     sf::Texture xbox;
     sf::Texture mouse;
 
     /*Load image*/
     if (!go_back.loadFromFile("media/images/back_img.png"))
-        std::cout << "Image not found" << std::endl;
-
-    if (!wii.loadFromFile("media/images/wii.png"))
         std::cout << "Image not found" << std::endl;
 
     if (!xbox.loadFromFile("media/images/xbox.png"))
@@ -720,8 +716,7 @@ void launch_options_controls(std::fstream& file, const sf::Texture& menu_backgro
 
     /*Draw option menu's buttons*/
     menu_controls.add_button(new fdx::menu::ButtonImage(100, 105, 100, 100, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, mouse));
-    menu_controls.add_button(new fdx::menu::ButtonImage(260, 105, 100, 100, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, xbox));
-    menu_controls.add_button(new fdx::menu::ButtonImage(415, 105, 100, 100, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, wii));
+    menu_controls.add_button(new fdx::menu::ButtonImage(415, 105, 100, 100, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, xbox));
     menu_controls.add_button(new fdx::menu::ButtonText(100, 240, 200, 50, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), false, over, press, fdx::menu::Language::getText(fdx::menu::Language::CONFIGURE), font, 20, sf::Color::Black, sf::Color(205,201,201,255)));
     menu_controls.add_button(new fdx::menu::ButtonText(320, 240, 200, 50, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), false, over, press, fdx::menu::Language::getText(fdx::menu::Language::CONFIRM), font, 20, sf::Color::Black, sf::Color(205,201,201,255)));
     menu_controls.add_button(new fdx::menu::ButtonImage(100, 320, 140, 50, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, go_back));
@@ -803,21 +798,7 @@ void launch_options_controls(std::fstream& file, const sf::Texture& menu_backgro
 
                 break;
             }
-            //Wii controller
             case 2:
-            {
-                //Wii controller
-                control = 2;
-                //Mark the button, unmark the others
-                menu_controls.change_color_image(2, sf::Color(255,255,255,128));
-                menu_controls.change_color_image(1, sf::Color(255,255,255,255));
-                menu_controls.change_color_image(0, sf::Color(255,255,255,255));
-                //Unlock confirm
-                menu_controls.unlock_buttons(3);
-                menu_controls.unlock_buttons(4);
-                break;
-            }
-            case 3:
             {
                 if (control == 0)
                     launch_options_configure_mouse(file, menu_background, over, press, font);
@@ -826,11 +807,11 @@ void launch_options_controls(std::fstream& file, const sf::Texture& menu_backgro
                 break;
             }
 
-            case 4:
+            case 3:
 
                 if (control>=0&&control<=2)
                     fdx::fighter::controllers.set_controller(control);
-            case 5:
+            case 4:
 
                 //Save
                 std::ofstream fbindings("bindings.data", std::ios::trunc);
@@ -1192,15 +1173,11 @@ int launch_options_second_control(const sf::Texture& menu_background, const sf::
 
     /*Images*/
     sf::Texture go_back;
-    sf::Texture wii;
     sf::Texture xbox;
     sf::Texture mouse;
 
     /*Load image*/
     if (!go_back.loadFromFile("media/images/back_img.png"))
-        std::cout << "Image not found" << std::endl;
-
-    if (!wii.loadFromFile("media/images/wii.png"))
         std::cout << "Image not found" << std::endl;
 
     if (!xbox.loadFromFile("media/images/xbox.png"))
@@ -1215,9 +1192,7 @@ int launch_options_second_control(const sf::Texture& menu_background, const sf::
 
     /*Draw option menu's buttons*/
     menu_controls.add_button(new fdx::menu::ButtonImage(100, 105, 100, 100, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, mouse));
-    menu_controls.add_button(new fdx::menu::ButtonImage(260, 105, 100, 100, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, xbox));
-    menu_controls.add_button(new fdx::menu::ButtonImage(415, 105, 100, 100, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, wii));
-
+    menu_controls.add_button(new fdx::menu::ButtonImage(415, 105, 100, 100, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, xbox));
 
     menu_controls.change_color_image(fdx::fighter::controllers.get_cont_num(), sf::Color(255,255,255,128));
 
@@ -1282,15 +1257,6 @@ int launch_options_second_control(const sf::Texture& menu_background, const sf::
 
                 break;
             }
-            //Wii controller
-            case 2:
-            {
-                //Wii controller
-                return 2;
-
-                break;
-            }
-
         }
 
         second_control.clear();
