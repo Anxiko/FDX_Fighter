@@ -144,7 +144,6 @@ namespace fdx{ namespace fighter
         {
             fdx::fighter::KM_Controller* ptr_km=dynamic_cast<KM_Controller *>(ctrler);
             fdx::fighter::GP_Controller* ptr_gp=dynamic_cast<GP_Controller *>(ctrler);
-            fdx::fighter::Wii_Controller* ptr_wii=dynamic_cast<Wii_Controller *>(ctrler);
 
             while (cm.pollEvent(event))
             {
@@ -247,11 +246,6 @@ namespace fdx{ namespace fighter
                 ptr_km->process_point(cm.get_tra_ms().x,cm.get_tra_ms().y);
             else if (ptr_gp)
                 ptr_gp->process_center(spshp.get_center());
-            else if (ptr_wii)
-            {
-                ptr_wii->set_center(cm.get_center());
-                ptr_wii->update();
-            }
 
             //Update and move
             //spshp.point(cm.get_tra_ms());//Point the spaceship at the translated mouse
@@ -458,11 +452,9 @@ namespace fdx{ namespace fighter
         {
             fdx::fighter::KM_Controller* ptr_km=dynamic_cast<KM_Controller *>(ctrler);
             fdx::fighter::GP_Controller* ptr_gp=dynamic_cast<GP_Controller *>(ctrler);
-            fdx::fighter::Wii_Controller* ptr_wii=dynamic_cast<Wii_Controller *>(ctrler);
 
             fdx::fighter::KM_Controller* ptr_km2=dynamic_cast<KM_Controller *>(ctrler2);
             fdx::fighter::GP_Controller* ptr_gp2=dynamic_cast<GP_Controller *>(ctrler2);
-            fdx::fighter::Wii_Controller* ptr_wii2=dynamic_cast<Wii_Controller *>(ctrler2);
 
             while (cm.pollEvent(event))
             {
@@ -615,11 +607,6 @@ namespace fdx{ namespace fighter
                 ptr_km->process_point(cm.get_tra_ms().x,cm.get_tra_ms().y);
             else if (ptr_gp)
                 ptr_gp->process_center(spshp.get_center());
-            else if (ptr_wii)
-            {
-                ptr_wii->set_center(spshp.get_center());
-                ptr_wii->update();
-            }
 
 
 
@@ -630,11 +617,6 @@ namespace fdx{ namespace fighter
                 ptr_km2->process_point(cm.get_tra_ms().x,cm.get_tra_ms().y);
             else if (ptr_gp2)
                 ptr_gp2->process_center(spshp2.get_center());
-            else if (ptr_wii2)
-            {
-                ptr_wii2->set_center(spshp2.get_center());
-                ptr_wii2->update();
-            }
 
             //Update and move
             //spshp.point(cm.get_tra_ms());//Point the spaceship at the translated mouse

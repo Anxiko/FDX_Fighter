@@ -42,13 +42,21 @@
 /* Includes */
 
 //FDX 2D vectors
-#include "FDX_vct.hpp"
+#include "FDX_Vct/FDX_Vct.hpp"
 
 /* Defines */
 
 /*Constants*/
 
 /*Macros*/
+
+//Angle conversions
+
+//Convert from radians to degrees
+#define RAD_TO_DEG(rad) (rad*(180/PI))
+
+//Convert from degrees to radians
+#define DEG_TO_RAD(deg) (deg*(PI/180))
 
 
 //Namespace

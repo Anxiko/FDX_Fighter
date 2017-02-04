@@ -49,12 +49,9 @@
 #include <sstream>
 
 //2D Vector
-#include "FDX_Vct.hpp"
+#include "FDX_Vct/FDX_Vct.hpp"
 
 #include <iostream>
-
-//Wiimote
-#include "wiiuse.h"
 
 /* Defines */
 
@@ -91,9 +88,6 @@ namespace fdx { namespace fighter
 
     //Gamepad controller
     class GP_Controller;
-
-    //Wii controller
-    class Wii_Controller;
 
     /* Variables */
 
@@ -1212,145 +1206,6 @@ namespace fdx { namespace fighter
             }
     };
 
-    //Wii controller
-    class Wii_Controller : public Inter_Controller
-    {
-        /*Settings*/
-        private:
-
-            static constexpr int MAX_WIIMOTES=1;//Number of wiimotes
-            static constexpr int DEF_CAL_X=1024/2,DEF_CAL_Y=760/2;
-
-        /*Attributes*/
-        private:
-
-            //Wiimotes array
-            wiimote** wiimotes;
-
-            //Events
-            bool acc_state,brake_state,fire_state;//Buttons
-            bool j1_state,j2_state,j3_state;
-
-            arrow::Vct r;//Position
-            arrow::Vct calibrate;//Relative center of the wii mote
-
-            arrow::Vct center;//Center of the screen
-
-        /*Constructors, copy control*/
-        public:
-
-            //Default constructor
-            Wii_Controller()
-            :wiimotes(nullptr),acc_state(false),brake_state(false),fire_state(false),j1_state(false),j2_state(false),j3_state(false),r(0,0),calibrate(DEF_CAL_X,DEF_CAL_Y),center(0,0)
-            {
-                wiimotes =  wiiuse_init(MAX_WIIMOTES);
-
-                wiiuse_find(wiimotes, MAX_WIIMOTES, 5);
-
-                wiiuse_connect(wiimotes, MAX_WIIMOTES);
-
-                wiiuse_set_leds(wiimotes[0], WIIMOTE_LED_1);
-
-                wiiuse_motion_sensing(wiimotes[0], 0);
-                wiiuse_set_ir(wiimotes[0], 1);
-            }
-
-            //Destructor
-            ~Wii_Controller()
-            {
-                wiiuse_cleanup(wiimotes, MAX_WIIMOTES);
-            }
-
-        /*Update*/
-        public:
-
-            void update()
-            {
-                if (wiiuse_poll(wiimotes, MAX_WIIMOTES)) {
-                    for (int i = 0; i < MAX_WIIMOTES; ++i) {
-                        switch (wiimotes[i]->event) {
-                            case WIIUSE_EVENT:
-                                /* a generic event occurred */
-                                handle_event(wiimotes[i]);
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
-                }
-            }
-
-        void set_center(const arrow::Vct & icenter)
-        {
-            center=icenter;
-        }
-
-        private:
-
-            void handle_event(struct wiimote_t* wm)
-            {
-                acc_state=IS_PRESSED(wm, WIIMOTE_BUTTON_A);
-                fire_state=IS_PRESSED(wm, WIIMOTE_BUTTON_B);
-                brake_state=IS_PRESSED(wm, WIIMOTE_BUTTON_DOWN);
-                j1_state=IS_PRESSED(wm, WIIMOTE_BUTTON_LEFT);
-                j2_state=IS_PRESSED(wm, WIIMOTE_BUTTON_UP);
-                j3_state=IS_PRESSED(wm, WIIMOTE_BUTTON_RIGHT);
-
-                r.setXY(wm->ir.x,wm->ir.y);
-                if (IS_PRESSED(wm,WIIMOTE_BUTTON_ONE))
-                    calibrate=r;
-            }
-
-        /*Interface*/
-        public:
-
-            //Accelerate
-            virtual bool ctrl_acc() const
-            {
-                return acc_state;
-            }
-
-            //Brake
-            virtual bool ctrl_brake() const
-            {
-                return brake_state;
-            }
-
-            //Fire
-            virtual bool ctrl_fire() const
-            {
-                return fire_state;
-            }
-
-            virtual bool ctrl_joke1() const
-            {
-                return j1_state;
-            }
-
-            virtual bool ctrl_joke2() const
-            {
-                return j2_state;
-            }
-
-            virtual bool ctrl_joke3() const
-            {
-                return j3_state;
-            }
-
-            //Point position
-
-            virtual int point_x() const
-            {
-                return (r+center-calibrate).x;
-            }
-
-            virtual int point_y() const
-            {
-                return (r+center-calibrate).y;
-            }
-    };
-
     //Control selected
     class Selected_Controller
     {
@@ -1365,7 +1220,6 @@ namespace fdx { namespace fighter
             {
                 CTRL_KM=0,
                 CTRL_GP,
-                CTRL_WC,
                 MAX_CONTROLLERS//Num of controllers
             };
 
@@ -1380,7 +1234,6 @@ namespace fdx { namespace fighter
 
             KM_Controller km;
             GP_Controller gp;
-            Wii_Controller wc;
 
             //Selected controller
             Inter_Controller *selected,*selected2;
@@ -1390,7 +1243,7 @@ namespace fdx { namespace fighter
 
         //Default constructor
         Selected_Controller ()
-        :km(),gp(),wc(),selected(nullptr),sel_num(DEF_SEL),sel_num2(DEF_SEL2)
+        :km(),gp(),selected(nullptr),sel_num(DEF_SEL),sel_num2(DEF_SEL2)
         {
             set_controller(sel_num);
         }
@@ -1418,11 +1271,6 @@ namespace fdx { namespace fighter
                         break;
                     }
 
-                    case CTRL_WC:
-                    {
-                        selected=&wc;
-                        break;
-                    }
                 }
             }
 
@@ -1443,12 +1291,6 @@ namespace fdx { namespace fighter
                     case CTRL_GP:
                     {
                         selected2=&gp;
-                        break;
-                    }
-
-                    case CTRL_WC:
-                    {
-                        selected2=&wc;
                         break;
                     }
                 }

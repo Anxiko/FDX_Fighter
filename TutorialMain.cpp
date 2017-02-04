@@ -179,7 +179,6 @@ namespace fdx{ namespace fighter
         {
             fdx::fighter::KM_Controller* ptr_km=dynamic_cast<KM_Controller *>(ctrler);
             fdx::fighter::GP_Controller* ptr_gp=dynamic_cast<GP_Controller *>(ctrler);
-            fdx::fighter::Wii_Controller* ptr_wii=dynamic_cast<Wii_Controller *>(ctrler);
 
             while (cm.pollEvent(event))
             {
@@ -217,74 +216,6 @@ namespace fdx{ namespace fighter
                             n_step = 1;
                         else
                             n_step = 6;
-                    }
-                }
-                else if (ptr_wii)
-                {
-                    //Read button name
-                    fire_but = "B";
-                    acc_but = "A";
-                    brake_but = "DOWN";
-                    //Número de paso
-                    switch (n_step)
-                    {
-                        case 0:
-                        {
-                            if (ctrler->ctrl_acc())
-                            {
-                                step_without_events = false;
-                                n_step = 1;
-                            }
-                            break;
-                        }
-                        case 1:
-                        {
-                            if (ptr_wii->ctrl_fire())
-                                n_step = 2;
-                            break;
-                        }
-                        case 2:
-                        {
-                            if (ptr_wii->ctrl_acc())
-                                n_step = 3;
-                            break;
-                        }
-                        case 3:
-                        {
-                            if (ptr_wii->ctrl_brake())
-                                n_step = 4;
-                            break;
-                        }
-                        case 4:
-                        {
-                            step_without_events = true;
-                            n_step = 5;
-                            break;
-                        }
-                        case 5:
-                        {
-                            if (ctrler->ctrl_acc())
-                            {
-                                step_without_events = false;
-                                n_step = 6;
-                            }
-                        }
-                        case 6:
-                        {
-                            if (!one_enemy)
-                            {
-                                tutorial.add_enemy();
-                                one_enemy = true;
-                                n_step = 7;
-                            }
-                            break;
-                        }
-                        case 8:
-                        {
-                            if (ctrler->ctrl_acc())
-                                cm.close();
-                            break;
-                        }
                     }
                 }
 
@@ -422,11 +353,6 @@ namespace fdx{ namespace fighter
                 ptr_km->process_point(cm.get_tra_ms().x,cm.get_tra_ms().y);
             else if (ptr_gp)
                 ptr_gp->process_center(spshp.get_center());
-            else if (ptr_wii)
-            {
-                ptr_wii->set_center(cm.get_center());
-                ptr_wii->update();
-            }
 
             //Update and move
             //spshp.point(cm.get_tra_ms());//Point the spaceship at the translated mouse
