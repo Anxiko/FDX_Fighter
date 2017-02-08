@@ -85,7 +85,8 @@ namespace fdx{ namespace fighter
                 //Notice
                 sf::Text new_text;
                 new_text.setString(fdx::menu::Language::getText(fdx::menu::Language::ENEMY_DIED));
-                new_text.setColor(teams.get_friendly());
+                new_text.setFillColor(teams.get_friendly());
+                new_text.setOutlineColor(teams.get_friendly());
                 texts.push_back(new_text);
 
                 //Delete
@@ -114,7 +115,8 @@ namespace fdx{ namespace fighter
 
             sf::Text new_text;
             new_text.setString(fdx::menu::Language::getText(fdx::menu::Language::YOU_DIED));
-            new_text.setColor(teams.get_enemy());
+            new_text.setFillColor(teams.get_enemy());
+            new_text.setOutlineColor(teams.get_enemy());
             texts.push_back(new_text);
         }
 
@@ -152,24 +154,28 @@ namespace fdx{ namespace fighter
                 {
                     sf::Text new_text;
                     new_text.setString(fdx::menu::Language::getText(fdx::menu::Language::WON));
-                    new_text.setColor(teams.get_friendly());
+                    new_text.setFillColor(teams.get_friendly());
+                    new_text.setOutlineColor(teams.get_friendly());
                     texts.push_back(new_text);
 
                     sf::Text new_text2;
                     new_text2.setString(fdx::menu::Language::getText(fdx::menu::Language::LOSE));
-                    new_text2.setColor(teams.get_enemy());
+                    new_text2.setFillColor(teams.get_enemy());
+                    new_text2.setOutlineColor(teams.get_enemy());
                     texts2.push_back(new_text2);
                 }
                 else
                 {
                     sf::Text new_text;
                     new_text.setString(fdx::menu::Language::getText(fdx::menu::Language::LOSE));
-                    new_text.setColor(teams.get_enemy());
+                    new_text.setFillColor(teams.get_enemy());
+                    new_text.setOutlineColor(teams.get_enemy());
                     texts.push_back(new_text);
 
                     sf::Text new_text2;
                     new_text2.setString(fdx::menu::Language::getText(fdx::menu::Language::WON));
-                    new_text2.setColor(teams.get_friendly());
+                    new_text2.setFillColor(teams.get_friendly());
+                    new_text2.setOutlineColor(teams.get_friendly());
                     texts2.push_back(new_text2);
                 }
             }

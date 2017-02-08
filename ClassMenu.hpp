@@ -254,9 +254,15 @@ namespace fdx { namespace menu
             void change_color_text()
             {
                 if (isAvailable())
-                    button_text.setColor(unlock_color);
+                {
+                    button_text.setFillColor(unlock_color);
+                    button_text.setOutlineColor(unlock_color);
+                }
                 else
-                    button_text.setColor(lock_color);
+                {
+                    button_text.setFillColor(lock_color);
+                    button_text.setOutlineColor(lock_color);
+                }
             }
 
         public:
@@ -496,7 +502,8 @@ namespace fdx { namespace menu
             {
                 //Title
                 title.setPosition(sf::Vector2f(itittle_x, itittle_y));
-                title.setColor(ititle_color);
+                title.setFillColor(ititle_color);
+                title.setOutlineColor(ititle_color);
             }
 
             //Destructor

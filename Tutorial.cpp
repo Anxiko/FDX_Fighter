@@ -82,7 +82,8 @@ namespace fdx{ namespace fighter
                 //Notice
                 sf::Text new_text;
                 new_text.setString(fdx::menu::Language::getText(fdx::menu::Language::ENEMY_DIED));
-                new_text.setColor(teams.get_friendly());
+                new_text.setFillColor(teams.get_friendly());
+                new_text.setOutlineColor(teams.get_friendly());
                 texts.push_back(new_text);
 
                 //Delete
@@ -108,7 +109,8 @@ namespace fdx{ namespace fighter
 
             sf::Text new_text;
             new_text.setString(fdx::menu::Language::getText(fdx::menu::Language::YOU_DIED));
-            new_text.setColor(teams.get_enemy());
+            new_text.setFillColor(teams.get_enemy());
+            new_text.setOutlineColor(teams.get_enemy());
             texts.push_back(new_text);
         }
 

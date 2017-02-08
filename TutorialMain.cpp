@@ -168,7 +168,8 @@ namespace fdx{ namespace fighter
         action_text.setFont(ft);
         action_text.setCharacterSize(40);
         action_text.setPosition(200.f, 25.f);
-        action_text.setColor(sf::Color::Yellow);
+        action_text.setFillColor(sf::Color::Yellow);
+        action_text.setOutlineColor(sf::Color::Yellow);
 
         //Control of steps
         bool step_without_events = true;
@@ -242,14 +243,16 @@ namespace fdx{ namespace fighter
                                 {
                                     sf::Text new_text;
                                     new_text.setString(menu::Language::getText(menu::Language::VSYNC_ON));
-                                    new_text.setColor(fdx::fighter::teams.get_enemy());
+                                    new_text.setFillColor(fdx::fighter::teams.get_enemy());
+                                    new_text.setOutlineColor(fdx::fighter::teams.get_enemy());
                                     td.add_text(new_text);
                                 }
                                 else
                                 {
                                     sf::Text new_text;
                                     new_text.setString(menu::Language::getText(menu::Language::VSYNC_OFF));
-                                    new_text.setColor(fdx::fighter::teams.get_friendly());
+                                    new_text.setFillColor(fdx::fighter::teams.get_friendly());
+                                    new_text.setOutlineColor(fdx::fighter::teams.get_friendly());
                                     td.add_text(new_text);
                                 }
                                 break;

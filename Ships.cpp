@@ -128,7 +128,8 @@ namespace fdx { namespace fighter
         if (ft&&(!name.empty()))
         {
             sf::Text text(name,*ft,20);
-            text.setColor(teams.get_team_color(t));
+            text.setFillColor(teams.get_team_color(t));
+            text.setOutlineColor(teams.get_team_color(t));
             text.setPosition(get_center().x,get_center().y-shield.get_size()-15);
 
             //Center the text

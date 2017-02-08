@@ -90,7 +90,8 @@ namespace fdx { namespace fighter
             Joke (const sf::Font& jfont, std::string jtext, const sf::Texture& jimg, const sf::SoundBuffer& jsound, const sf::Color& color) :
             jk_text(jtext, jfont, 40), jk_sound(), jk_img()
             {
-                jk_text.setColor(color);
+                jk_text.setFillColor(color);
+                jk_text.setOutlineColor(color);
                 jk_img.setOrigin(40.f, 40.f);
                 jk_sound.setBuffer(jsound);
                 jk_img.setTexture(jimg);

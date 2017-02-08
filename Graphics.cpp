@@ -437,7 +437,8 @@ namespace fdx { namespace fighter
         //Create the text
         sf::Text new_text;
         new_text.setString(text.getString());
-        new_text.setColor(text.getColor());
+        new_text.setFillColor(text.getFillColor());
+        new_text.setOutlineColor(text.getOutlineColor());
         new_text.setFont(font);
 
         //Center the text

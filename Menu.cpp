@@ -835,11 +835,14 @@ void launch_options_configure_mouse(const sf::Texture& menu_background, const sf
 
     //Actions
     shoot.setPosition(70, 110);
-    shoot.setColor(sf::Color::Yellow);
+    shoot.setFillColor(sf::Color::Yellow);
+    shoot.setOutlineColor(sf::Color::Yellow);
     speed.setPosition(70,190);
-    speed.setColor(sf::Color::Yellow);
+    speed.setFillColor(sf::Color::Yellow);
+    speed.setOutlineColor(sf::Color::Yellow);
     brake.setPosition(70,275);
-    brake.setColor(sf::Color::Yellow);
+    brake.setFillColor(sf::Color::Yellow);
+    brake.setOutlineColor(sf::Color::Yellow);
 
     /*Draw buttons*/
     menu_mouse.add_button(new fdx::menu::ButtonText(300, 95, 200, 50, 5, 5, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, controller.get_fire().print(), font, 20, sf::Color::Black, sf::Color(205,201,201,255)));
@@ -988,13 +991,17 @@ void launch_options_configure_xbox(const sf::Texture& menu_background, const sf:
 
     //Actions
     shoot.setPosition(70, 110);
-    shoot.setColor(sf::Color::Yellow);
+    shoot.setFillColor(sf::Color::Yellow);
+    shoot.setOutlineColor(sf::Color::Yellow);
     speed.setPosition(70,190);
-    speed.setColor(sf::Color::Yellow);
+    speed.setFillColor(sf::Color::Yellow);
+    speed.setOutlineColor(sf::Color::Yellow);
     brake.setPosition(70,275);
-    brake.setColor(sf::Color::Yellow);
+    brake.setFillColor(sf::Color::Yellow);
+    brake.setOutlineColor(sf::Color::Yellow);
     stick.setPosition(70,355);
-    stick.setColor(sf::Color::Yellow);
+    stick.setFillColor(sf::Color::Yellow);
+    stick.setOutlineColor(sf::Color::Yellow);
 
     //Controller
     fdx::fighter::GP_Controller controller(fdx::fighter::controllers.get_gp());

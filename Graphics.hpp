@@ -926,7 +926,8 @@ namespace fdx { namespace fighter
                     ss<<m.get_seconds();
                     sf::Text text(ss.str(),ft,txt_sz);
                     text.setPosition(t_x,y);
-                    text.setColor(teams.get_neutral());
+                    text.setFillColor(teams.get_neutral());
+                    text.setOutlineColor(teams.get_neutral());
                     target.draw(text);
                     y+=jump_y;
                 }
@@ -938,7 +939,8 @@ namespace fdx { namespace fighter
                     ss<<m.get_current_friend()<<"/"<<m.get_max_friend();
                     sf::Text text(ss.str(),ft,txt_sz);
                     text.setPosition(t_x,y);
-                    text.setColor(teams.get_friendly());
+                    text.setFillColor(teams.get_friendly());
+                    text.setOutlineColor(teams.get_friendly());
                     target.draw(text);
                     y+=jump_y;
                 }
@@ -950,7 +952,8 @@ namespace fdx { namespace fighter
                     ss<<m.get_current_enemy()<<"/"<<m.get_max_enemy();
                     sf::Text text(ss.str(),ft,txt_sz);
                     text.setPosition(t_x,y);
-                    text.setColor(teams.get_enemy());
+                    text.setFillColor(teams.get_enemy());
+                    text.setOutlineColor(teams.get_enemy());
                     target.draw(text);
                     y+=jump_y;
                 }
@@ -961,7 +964,8 @@ namespace fdx { namespace fighter
                     ss<<"Score: "<<m.get_score();
                     sf::Text text(ss.str(),ft,txt_sz);
                     text.setPosition(t_x+400,50);
-                    text.setColor(teams.get_neutral());
+                    text.setFillColor(teams.get_neutral());
+                    text.setOutlineColor(teams.get_neutral());
                     target.draw(text);
                 }
             }
