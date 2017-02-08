@@ -749,10 +749,9 @@ void launch_options_controls(const sf::Texture& menu_background, const sf::Sound
                 //Mark the button, unmark the others
                 menu_controls.change_color_image(0, sf::Color(255,255,255,128));
                 menu_controls.change_color_image(1, sf::Color(255,255,255,255));
-                menu_controls.change_color_image(2, sf::Color(255,255,255,255));
                 //Unlock confirm
+                menu_controls.unlock_buttons(2);
                 menu_controls.unlock_buttons(3);
-                menu_controls.unlock_buttons(4);
 
                 break;
             }
@@ -764,10 +763,9 @@ void launch_options_controls(const sf::Texture& menu_background, const sf::Sound
                 //Mark the button, unmark the others
                 menu_controls.change_color_image(1, sf::Color(255,255,255,128));
                 menu_controls.change_color_image(0, sf::Color(255,255,255,255));
-                menu_controls.change_color_image(2, sf::Color(255,255,255,255));
                 //Unlock confirm
+                menu_controls.unlock_buttons(2);
                 menu_controls.unlock_buttons(3);
-                menu_controls.unlock_buttons(4);
 
                 break;
             }
@@ -782,7 +780,7 @@ void launch_options_controls(const sf::Texture& menu_background, const sf::Sound
 
             case 3:
 
-                if (control>=0&&control<=2)
+                if (control>=0&&control<=1)
                     fdx::fighter::controllers.set_controller(control);
             case 4:
 
