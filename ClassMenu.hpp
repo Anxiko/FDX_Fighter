@@ -47,6 +47,7 @@
 #include "SFML/Audio.hpp"
 
 //STD
+#include <fstream>
 #include <string>
 #include <vector>
 #include <cstdint>
@@ -608,6 +609,61 @@ namespace fdx { namespace menu
             {}
 
         /* Methods */
+
+        /*Get/set*/
+        public:
+
+            //Get
+
+            //Get the language
+            Language::en_type get_lang() const
+            {
+                return lang;
+            }
+
+            //Get the ally color
+            int get_ally() const
+            {
+                return a_color;
+            }
+
+            //Get the neutral color
+            int get_neutral() const
+            {
+                return n_color;
+            }
+
+            //Get the enemy color
+            int get_enemy() const
+            {
+                return e_color;
+            }
+
+            //Set
+
+            //Set the language
+            void set_lang(Language::en_type ilang)
+            {
+                lang=ilang;
+            }
+
+            //Set the ally color code
+            void set_ally(int ially)
+            {
+                a_color=ially;
+            }
+
+            //Set the neutral color code
+            void set_neutral(int ineutral)
+            {
+                n_color=ineutral;
+            }
+
+            //Set the enemy color code
+            void set_enemy(int ienemy)
+            {
+                e_color=ienemy;
+            }
 
         /*I/O*/
         public:

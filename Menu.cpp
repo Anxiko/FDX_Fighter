@@ -8,61 +8,24 @@
 #include "TutorialMain.hpp"
 #include "main.hpp"
 
-void launch_options(std::fstream& file, const std::array<int, 3>& colors_read, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
-void launch_options_colors(std::fstream& file, const std::array<int, 3>& colors_read, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
-void launch_options_language(std::fstream& file, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
-void launch_options_controls(std::fstream& file, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
-void launch_options_configure_mouse(std::fstream& file, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
-void launch_options_configure_xbox(std::fstream& file, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
+void launch_options(fdx::menu::Config &cfg, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
+void launch_options_colors(fdx::menu::Config &cfg, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
+void launch_options_language(fdx::menu::Config &cfg, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
+void launch_options_controls(const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
+void launch_options_configure_mouse(const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
+void launch_options_configure_xbox(const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
 int launch_options_second_control(const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font);
 
 int main()
 {
-    /*Configuration's file*/
-    std::fstream fconfig;
+    //Music
 
     sf::Music music;
-    //Load the texure
+    //Load the track
     if (!music.openFromFile("media/sounds/menu_music.ogg"))
         std::cout<<"Error loading music"<<std::endl;
     music.play();
     music.setLoop(true);
-
-    //True if config file doesn't exist
-    bool first_time;
-
-    //Colors read
-    std::array<int, 3> cA_N_E = {{-1, -1, -1}};
-
-    fconfig.open("config.txt");
-    //Exists and it's open
-    if (fconfig.is_open())
-    {
-        //Read language
-        std::string idiom;
-        first_time = false;
-        fconfig >> idiom;
-        if (idiom == "English")
-            fdx::menu::Language::setLang(fdx::menu::Language::Langs::ENGLISH);
-        else
-            fdx::menu::Language::setLang(fdx::menu::Language::Langs::SPANISH);
-
-        //Read the colors and identify them with the dictionary
-        fconfig >> cA_N_E[0];
-        fdx::fighter::teams.set_friendly(fdx::menu::DictionaryColors::getColor(cA_N_E[0]));
-        fconfig >> cA_N_E[1];
-        fdx::fighter::teams.set_neutral(fdx::menu::DictionaryColors::getColor(cA_N_E[1]));
-        fconfig >> cA_N_E[2];
-        fdx::fighter::teams.set_enemy(fdx::menu::DictionaryColors::getColor(cA_N_E[2]));
-    }
-    else
-    {
-        first_time = true;
-        fdx::menu::Language::setLang(fdx::menu::Language::Langs::ENGLISH);
-        fconfig.open("config.txt", std::ios::out);
-        if (!fconfig.is_open())
-            return 0;
-    }
 
     /*Bindings's file*/
     std::ifstream fbindings("bindings.data", std::ios::binary);
@@ -115,13 +78,29 @@ int main()
     menu_options.setSmooth(true);
     menu_exit.setSmooth(true);
 
-    if (first_time)
-    {
-        launch_options_language(fconfig, menu_background, over, press, font);
-        launch_options_colors(fconfig, cA_N_E, menu_background, over, press, font);
+    //Configuration
 
-        first_time = false;
+    fdx::menu::Config config;//Contains the default configuration, can be read from file if file exists
+
+    std::ifstream if_config("config.data",std::ios::binary);
+
+    //Exists and it's open
+    if (if_config)
+    {
+        config.read_from(if_config);
     }
+    //Doesn't exist, set config and write it
+    else
+    {
+        launch_options_language(config, menu_background, over, press, font);
+        launch_options_colors(config, menu_background, over, press, font);
+
+        std::ofstream of_config("config.data",std::ios::binary|std::ios::trunc);
+        config.write_to(of_config);
+    }
+
+    //Apply the config
+    config.apply();
 
     /*Window*/
     sf::RenderWindow window(sf::VideoMode(600, 600), "SHIELD_ MENU");
@@ -211,11 +190,15 @@ int main()
             //Options
             case 3:
             {
-                int cp_lang = fdx::menu::Language::getLang();
-                launch_options(fconfig, cA_N_E, menu_background, over, press, font);
+                int cp_lang = config.get_lang();
+                launch_options(config, menu_background, over, press, font);
                 //Language changed
-                if (cp_lang != fdx::menu::Language::getLang())
+                if (cp_lang != config.get_lang())
                     window.close();
+
+                config.apply();
+                std::ofstream of_config("config.data",std::ios::binary|std::ios::trunc);
+                config.write_to(of_config);
 
                 break;
             }
@@ -232,12 +215,11 @@ int main()
         window.display();
     }
 
-    fconfig.close();
     return 0;
 }
 
 
-void launch_options(std::fstream& file, const std::array<int,3>& colors_read, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
+void launch_options(fdx::menu::Config &cfg, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
 {
     /*Window*/
     sf::RenderWindow options(sf::VideoMode(600, 500), fdx::menu::Language::getText(fdx::menu::Language::OPTIONS));
@@ -321,24 +303,24 @@ void launch_options(std::fstream& file, const std::array<int,3>& colors_read, co
             //Color
             case 1:
             {
-                launch_options_colors(file, colors_read, menu_background, over, press, font);
+                launch_options_colors(cfg, menu_background, over, press, font);
                 break;
             }
             //Language
             case 2:
             {
-                int cp_lang = fdx::menu::Language::getLang();
+                int cp_lang = cfg.get_lang();
 
-                launch_options_language(file, menu_background, over, press, font);
+                launch_options_language(cfg, menu_background, over, press, font);
                 //Language changed
-                if(cp_lang != fdx::menu::Language::getLang())
+                if(cp_lang != cfg.get_lang())
                     options.close();
                 break;
             }
             //Controls
             case 3:
             {
-                launch_options_controls(file, menu_background, over, press, font);
+                launch_options_controls(menu_background, over, press, font);
                 break;
             }
             //Back
@@ -355,7 +337,7 @@ void launch_options(std::fstream& file, const std::array<int,3>& colors_read, co
     }
 }
 
-void launch_options_colors(std::fstream& file, const std::array<int,3>& colors_read, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
+void launch_options_colors(fdx::menu::Config &cfg, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
 {
     /*Window*/
     sf::RenderWindow colors(sf::VideoMode(600, 400), fdx::menu::Language::getText(fdx::menu::Language::OPTIONS));
@@ -378,7 +360,7 @@ void launch_options_colors(std::fstream& file, const std::array<int,3>& colors_r
     fdx::menu::Menu options_colors(menu_background, fdx::menu::Language::getText(fdx::menu::Language::COLORS), 25, 220, 30, font, sf::Color::White);
 
     //Array of colors selected
-    std::array<int, 3> color_selected = colors_read;
+    std::array<int, 3> color_selected ({cfg.get_ally(),cfg.get_neutral(),cfg.get_enemy()});
     //Array of names
     std::array<std::string, 3> names = {{"A", "N", "E"}};
     //Index of array
@@ -508,20 +490,15 @@ void launch_options_colors(std::fstream& file, const std::array<int,3>& colors_r
                     //It's the confirm button
                     else
                     {
-                        file.seekg(9);
-                        for (int i = 0; i < 3; ++i)
-                        {
-                            file << color_selected[i] << std::endl;
-                        }
+                        cfg.set_ally(color_selected[0]);
+                        cfg.set_neutral(color_selected[1]);
+                        cfg.set_enemy(color_selected[2]);
                         colors.close();
                     }
                 }
             }
         }
 
-        fdx::fighter::teams.set_friendly(fdx::menu::DictionaryColors::getColor(color_selected[0]));
-        fdx::fighter::teams.set_neutral(fdx::menu::DictionaryColors::getColor(color_selected[1]));
-        fdx::fighter::teams.set_enemy(fdx::menu::DictionaryColors::getColor(color_selected[2]));
 
         colors.clear();
         colors.draw(options_colors);
@@ -529,7 +506,7 @@ void launch_options_colors(std::fstream& file, const std::array<int,3>& colors_r
     }
 }
 
-void launch_options_language(std::fstream& file, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
+void launch_options_language(fdx::menu::Config &cfg, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
 {
     /*Window*/
     sf::RenderWindow language(sf::VideoMode(600, 400), fdx::menu::Language::getText(fdx::menu::Language::OPTIONS));
@@ -567,6 +544,9 @@ void launch_options_language(std::fstream& file, const sf::Texture& menu_backgro
     menu_language.add_button(new fdx::menu::ButtonText(325, 240, 200, 50, 10, 10, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, fdx::menu::Language::getText(fdx::menu::Language::CONFIRM), font, 20, sf::Color::Black, sf::Color(205,201,201,255)));
     menu_language.add_button(new fdx::menu::ButtonImage(100, 240, 140, 50, 10, 10, sf::Color(255,127,42,255), sf::Color(150,60,0,255), true, over, press, go_back));
     menu_language.add_button(new fdx::menu::ButtonText(120, 320, 350, 50, 10, 10, sf::Color::Transparent, sf::Color::Transparent, false, sf::Sound(), sf::Sound(), fdx::menu::Language::getText(fdx::menu::Language::RESTART), font, 10, sf::Color::Yellow, sf::Color::Transparent));
+
+    //New chosen language
+    fdx::menu::Language::en_type new_lang=cfg.get_lang();
 
     while (language.isOpen())
     {
@@ -611,19 +591,18 @@ void launch_options_language(std::fstream& file, const sf::Texture& menu_backgro
         }
 
         /*Button selected*/
-        int eng_esp;
 
         switch (menu_language.button_pressed(x, y, but))
         {
             //Spanish
             case 0:
             {
-                eng_esp = 1;
+                new_lang = fdx::menu::Language::Langs::SPANISH;
                 //Mark the esp flag, unmark the eng flag
                 menu_language.change_color_image(0, sf::Color(255,255,255,128));
                 menu_language.change_color_image(1, sf::Color(255,255,255,255));
                 //It's the other option
-                if (fdx::menu::Language::getLang() != eng_esp)
+                if (cfg.get_lang() != new_lang)
                 {
                     //Show message
                     menu_language.unlock_buttons(4);
@@ -638,12 +617,12 @@ void launch_options_language(std::fstream& file, const sf::Texture& menu_backgro
             //English
             case 1:
             {
-                eng_esp = 0;
+                new_lang = fdx::menu::Language::Langs::ENGLISH;
                 //Mark the esp flag, unmark the eng flag
                 menu_language.change_color_image(1, sf::Color(255,255,255,128));
                 menu_language.change_color_image(0, sf::Color(255,255,255,255));
                 //It's the other option
-                if (fdx::menu::Language::getLang() != eng_esp)
+                if (cfg.get_lang() != new_lang)
                 {
                     //Show message
                     menu_language.unlock_buttons(4);
@@ -659,13 +638,7 @@ void launch_options_language(std::fstream& file, const sf::Texture& menu_backgro
             //Confirm
             case 2:
             {
-                fdx::menu::Language::setLang(eng_esp);
-                file.seekg(std::ios_base::beg);
-                if(fdx::menu::Language::getLang() == 1)
-                    file << "Español" << std::endl;
-                else
-                    file << "English" << std::endl;
-
+                cfg.set_lang(new_lang);
                 language.close();
                 break;
             }
@@ -683,7 +656,7 @@ void launch_options_language(std::fstream& file, const sf::Texture& menu_backgro
     }
 }
 
-void launch_options_controls(std::fstream& file, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
+void launch_options_controls(const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
 {
     /*Window*/
     sf::RenderWindow controls(sf::VideoMode(600, 420), fdx::menu::Language::getText(fdx::menu::Language::OPTIONS));
@@ -801,9 +774,9 @@ void launch_options_controls(std::fstream& file, const sf::Texture& menu_backgro
             case 2:
             {
                 if (control == 0)
-                    launch_options_configure_mouse(file, menu_background, over, press, font);
+                    launch_options_configure_mouse(menu_background, over, press, font);
                 else if (control == 1)
-                    launch_options_configure_xbox(file, menu_background, over, press, font);
+                    launch_options_configure_xbox(menu_background, over, press, font);
                 break;
             }
 
@@ -830,7 +803,7 @@ void launch_options_controls(std::fstream& file, const sf::Texture& menu_backgro
     }
 }
 
-void launch_options_configure_mouse(std::fstream& file, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
+void launch_options_configure_mouse(const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
 {
     /*Window*/
     sf::RenderWindow configure_mouse(sf::VideoMode(600, 420), fdx::menu::Language::getText(fdx::menu::Language::OPTIONS));
@@ -986,7 +959,7 @@ void launch_options_configure_mouse(std::fstream& file, const sf::Texture& menu_
     }
 }
 
-void launch_options_configure_xbox(std::fstream& file, const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
+void launch_options_configure_xbox(const sf::Texture& menu_background, const sf::Sound& over, const sf::Sound& press, const sf::Font& font)
 {
     /*Window*/
     sf::RenderWindow configure_xbox(sf::VideoMode(600, 500), fdx::menu::Language::getText(fdx::menu::Language::OPTIONS));
