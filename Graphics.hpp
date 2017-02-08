@@ -816,7 +816,7 @@ namespace fdx { namespace fighter
         /*Setting*/
         private:
 
-            static constexpr unsigned int DEF_RAD_RANGE=200u;
+            static constexpr unsigned int DEF_RAD_RANGE=2500u;
 
         /*Attributes*/
         private:
