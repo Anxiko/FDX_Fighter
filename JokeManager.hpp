@@ -51,7 +51,7 @@ class JokeManager : public sf::Drawable
                 t+=tick;
                 if(tr)
                 {
-                    if (tick>tr)
+                    if (static_cast<int>(tick)>tr)
                         tr=0;
                     else
                         tr-=tick;

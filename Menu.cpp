@@ -1169,6 +1169,9 @@ int launch_options_second_control(const sf::Texture& menu_background, const sf::
 
     menu_controls.change_color_image(fdx::fighter::controllers.get_cont_num(), sf::Color(255,255,255,128));
 
+    //Selected control
+    int control=-1;
+
     while (second_control.isOpen())
     {
         sf::Event event;
@@ -1209,16 +1212,14 @@ int launch_options_second_control(const sf::Texture& menu_background, const sf::
                 second_control.close();
         }
 
-        //Button selected
-        int control;
-
         switch (menu_controls.button_pressed(x, y, but))
         {
             //Keyboard and mouse
             case 0:
             {
                 //Keyboard and mouse
-                return 0;
+                control=0;
+                second_control.close();
 
                 break;
             }
@@ -1226,7 +1227,8 @@ int launch_options_second_control(const sf::Texture& menu_background, const sf::
             case 1:
             {
                 //Xbox controller
-                return 1;
+                control=1;
+                second_control.close();
 
                 break;
             }
@@ -1236,4 +1238,6 @@ int launch_options_second_control(const sf::Texture& menu_background, const sf::
         second_control.draw(menu_controls);
         second_control.display();
     }
+
+    return control;
 }

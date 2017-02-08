@@ -553,7 +553,7 @@ namespace fdx { namespace fighter
                     case sf::Event::JoystickButtonPressed:
                         new_state=true;
                     case sf::Event::JoystickButtonReleased:
-                        if (binding==e.joystickButton.button)
+                        if (binding==static_cast<int>(e.joystickButton.button))
                         {
                             state=new_state;
                             return true;
@@ -725,12 +725,12 @@ namespace fdx { namespace fighter
                     {
                         case LSY:
                         case LSX:
-                            if (e.joystickMove.axis==LSX)
+                            if (static_cast<int>(e.joystickMove.axis)==static_cast<int>(LSX))
                             {
                                 cpy_dir.x=e.joystickMove.position;
                                 rv=true;
                             }
-                            else if (e.joystickMove.axis==LSY)
+                            else if (static_cast<int>(e.joystickMove.axis)==static_cast<int>(LSY))
                             {
                                 cpy_dir.y=e.joystickMove.position;
                                 rv=true;
@@ -740,12 +740,12 @@ namespace fdx { namespace fighter
 
                         case RSY:
                         case RSX:
-                            if (e.joystickMove.axis==RSX)
+                            if (static_cast<int>(e.joystickMove.axis)==static_cast<int>(RSX))
                             {
                                 cpy_dir.x=e.joystickMove.position;
                                 rv=true;
                             }
-                            else if (e.joystickMove.axis==RSY)
+                            else if (static_cast<int>(e.joystickMove.axis)==static_cast<int>(RSY))
                             {
                                 cpy_dir.y=e.joystickMove.position;
                                 rv=true;
@@ -783,6 +783,9 @@ namespace fdx { namespace fighter
 
                             stick=RSX;
                             return true;
+
+                        default:
+                            break;
                     }
                 }
                 return false;

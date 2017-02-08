@@ -491,6 +491,9 @@ namespace fdx { namespace fighter
 
                     case PLAYER_2:
                         return player2;
+
+                    default:
+                        return nullptr;
                 }
             }
 
@@ -521,6 +524,9 @@ namespace fdx { namespace fighter
                         return max_player_lif-cur_player;
                     case PLAYER_2:
                         return max_player_lif-cur_player2;
+
+                    default:
+                        return -1;
                 }
             }
 
@@ -543,6 +549,9 @@ namespace fdx { namespace fighter
 
                     case PLAYER_2:
                         return max_player_lif-cur_player;
+
+                    default:
+                        return -1;
                 }
             }
 

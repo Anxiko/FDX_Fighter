@@ -134,7 +134,7 @@ namespace fdx { namespace fighter
                 return team.get_t()==get_t();
             }
 
-            bool neutral (const Team& team) const
+            bool neutral (const Team&) const
             {
                 return false;
             }

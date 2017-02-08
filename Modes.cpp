@@ -130,14 +130,14 @@ namespace fdx{ namespace fighter
     {
         if (delay1)
         {
-            if (ticks>delay1)
+            if (static_cast<int>(ticks)>delay1)
                 delay1=0;
             else
             delay1-=ticks;
         }
         if (delay2)
         {
-            if (ticks>delay2)
+            if (static_cast<int>(ticks)>delay2)
                 delay2=0;
             else
                 delay2-=ticks;
