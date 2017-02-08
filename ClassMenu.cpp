@@ -164,4 +164,65 @@ namespace fdx{ namespace menu
         }
     }
 
+    /*
+        Config
+    */
+
+    /* Methods */
+
+    /*I/O*/
+
+    //Write to file
+    void Config::write_to(std::ostream& os) const
+    {
+        //Fixed width integer for writing
+        int32_t temp;
+
+        //Write the language
+        temp=lang;
+        os.write(reinterpret_cast<char *>(&temp),sizeof(int32_t));
+
+        //Write the colors
+        temp=a_color;
+        os.write(reinterpret_cast<char *>(&temp),sizeof(int32_t));
+
+        temp=n_color;
+        os.write(reinterpret_cast<char *>(&temp),sizeof(int32_t));
+
+        temp=e_color;
+        os.write(reinterpret_cast<char *>(&temp),sizeof(int32_t));
+    }
+
+    //Read from file
+    void Config::read_from(std::istream& is)
+    {
+        //Fixed width integer for reading
+        int32_t temp;
+
+        //Read the language
+        is.read(reinterpret_cast<char *>(&temp),sizeof(int32_t));
+        lang=temp;
+
+        //Read the colors
+        is.read(reinterpret_cast<char *>(&temp),sizeof(int32_t));
+        a_color=temp;
+
+        is.read(reinterpret_cast<char *>(&temp),sizeof(int32_t));
+        n_color=temp;
+
+        is.read(reinterpret_cast<char *>(&temp),sizeof(int32_t));
+        e_color=temp;
+    }
+
+    /*Update*/
+
+    //Apply current config
+    void Config::apply() const
+    {
+        fdx::menu::Language::setLang(lang);
+        fdx::fighter::teams.set_friendly(fdx::menu::DictionaryColors::getColor(a_color));
+        fdx::fighter::teams.set_neutral(fdx::menu::DictionaryColors::getColor(n_color));
+        fdx::fighter::teams.set_enemy(fdx::menu::DictionaryColors::getColor(e_color));
+    }
+
 }}//End of namespace

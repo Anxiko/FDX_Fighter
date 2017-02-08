@@ -49,6 +49,10 @@
 //STD
 #include <string>
 #include <vector>
+#include <cstdint>
+
+//Teams
+#include "Teams.hpp"
 
 /* Defines */
 
@@ -87,6 +91,9 @@ namespace fdx { namespace menu
 
     //Window menu
     class Menu;
+
+    //Stores the program's configuration
+    class Config;
 
     /*
         Function prototypes
@@ -385,7 +392,7 @@ namespace fdx { namespace menu
                 MAX_LANG//Limit
             };
 
-        private:
+        public:
 
             //Default config
 
@@ -550,6 +557,72 @@ namespace fdx { namespace menu
 
             //Draw the menu
             void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+    };
+
+
+    //Stores the program's configuration
+    class Config
+    {
+        /* Config */
+
+        /*Language*/
+        private:
+
+            Language::en_type DEF_LANG=Language::DEF_LANG;//Default language
+
+        /*Colors*/
+        private:
+
+            static constexpr int DEF_A_COLOR=3;//Default ally color
+            static constexpr int DEF_N_COLOR=6;//Default neutral color
+            static constexpr int DEF_E_COLOR=2;//Default enemy color
+
+
+        /* Attributes */
+
+        /*Language*/
+        private:
+
+            Language::en_type lang;//Selected language
+
+        /*Colors*/
+        private:
+
+            int a_color;//Code for the ally color
+            int n_color;//Code for the neutral color
+            int e_color;//Code for the enemy color
+
+        /* Constructors, copy control */
+
+        /*Constructors*/
+        public:
+
+            //Complete constructor
+            Config(Language::en_type ilang, int ia_color, int in_color, int ie_color)
+            :lang(ilang),a_color(ia_color),n_color(in_color),e_color(ie_color)
+            {}
+
+            //Default constructor
+            Config()
+            :Config(DEF_LANG,DEF_A_COLOR,DEF_N_COLOR,DEF_E_COLOR)
+            {}
+
+        /* Methods */
+
+        /*I/O*/
+        public:
+
+            //Write to file
+            void write_to(std::ostream& os) const;
+
+            //Read from file
+            void read_from(std::istream& is);
+
+        /*Update*/
+        public:
+
+            //Apply current config
+            void apply() const;
     };
 }}//End of namespace
 
