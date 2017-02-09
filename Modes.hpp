@@ -316,7 +316,7 @@ namespace fdx { namespace fighter
 
             bool end_game() const//End of the game?
             {
-                return now_lif>=max_lif||now_tot>=max_tot;
+                return now_lif>=max_lif||((now_tot>=max_tot)&&(!now_cur));
             }
 
             Team get_winner() const//Winner of the game
