@@ -90,8 +90,8 @@ namespace fdx{ namespace fighter
             std::cout<<"Error loading texture"<<std::endl;
 
         //Laser model
-        fdx::fighter::Laser_Model lm(5000000,5,10,1e-3,20,50,fdx::fighter::Team(true));
-        fdx::fighter::Laser_Model lm2(5000000,5,10,1e-3,10,1,fdx::fighter::Team(false));
+        fdx::fighter::Laser_Model lm(5000000,5,10,1e-3,20,200,fdx::fighter::Team(true));
+        fdx::fighter::Laser_Model lm2(5000000,5,10,1e-3,5,50,fdx::fighter::Team(false));
 
         //Spaceship
         fdx::fighter::Spaceship spshp   (fdx::arrow::Vct(200,200),spt,fdx::fighter::Spshp_config(),fdx::fighter::Team(true),300,2e4);
@@ -368,8 +368,8 @@ namespace fdx{ namespace fighter
             std::cout<<"Error loading texture"<<std::endl;
 
         //Laser model
-        fdx::fighter::Laser_Model lm(5000000,5,10,1e-3,20,50,fdx::fighter::Team(true));
-        fdx::fighter::Laser_Model lm2(5000000,5,10,1e-3,20,50,fdx::fighter::Team(false));
+        fdx::fighter::Laser_Model lm(5000000,5,10,1e-3,20,200,fdx::fighter::Team(true));
+        fdx::fighter::Laser_Model lm2(5000000,5,10,1e-3,20,200,fdx::fighter::Team(false));
 
         //Spaceship
         fdx::fighter::Spaceship spshp       (fdx::arrow::Vct(0,0),spt,fdx::fighter::Spshp_config(),fdx::fighter::Team(true),300,2e4);
