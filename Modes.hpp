@@ -316,7 +316,7 @@ namespace fdx { namespace fighter
 
             bool end_game() const//End of the game?
             {
-                return (now_lif);
+                return now_lif>=max_lif||now_tot>=max_tot;
             }
 
             Team get_winner() const//Winner of the game
@@ -324,7 +324,7 @@ namespace fdx { namespace fighter
                 Team rv(player?player->team():Team());
                 if (end_game())
                 {
-                    if ((now_cur+now_tot)==0)//All enemies died
+                    if ((now_cur==0)&&(now_tot==max_tot))//All enemies died
                         return rv;
                     else//Player died
                         return rv.get_swapped();

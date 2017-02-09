@@ -59,19 +59,22 @@ namespace fdx{ namespace fighter
     //Population control
     void Offline_Survival::add_enemy()//Add enemy
     {
-        //Update the counters
-        ++now_cur;
-        --now_tot;
+        if (now_cur<max_cur&&now_tot<max_tot)
+        {
+            //Update the counters
+            ++now_cur;
+            ++now_tot;
 
-        //Insert the enemy
-        ais.emplace_front(get_rand_cnt(),txture,cfg,Team(player?player->team().get_swapped():Team().get_swapped()));
+            //Insert the enemy
+            ais.emplace_front(get_rand_cnt(),txture,cfg,Team(player?player->team().get_swapped():Team().get_swapped()));
 
-        //Configure it
-        AI_spaceship& new_ai=ais.front();
-        new_ai.set_enemy(player);
-        new_ai.put_lasers(&al);
-        new_ai.put_cannon(can);
-        new_ai.put_cannon_lasers(&al);
+            //Configure it
+            AI_spaceship& new_ai=ais.front();
+            new_ai.set_enemy(player);
+            new_ai.put_lasers(&al);
+            new_ai.put_cannon(can);
+            new_ai.put_cannon_lasers(&al);
+        }
     }
 
     void Offline_Survival::clean()//Delete dead ships
@@ -110,8 +113,8 @@ namespace fdx{ namespace fighter
         if (player&&need_rev())
         {
             //Revive the player only if it has any lifes left
-            if (--now_lif)
-                player->revive_at(arrow::Vct(0,0));
+            player->revive_at(arrow::Vct(0,0));
+            ++now_lif;
 
             sf::Text new_text;
             new_text.setString(fdx::menu::Language::getText(fdx::menu::Language::YOU_DIED));
