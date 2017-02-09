@@ -135,7 +135,7 @@ namespace fdx { namespace fighter
             :TTL(iTTL),circle(isz,iqual),s(is),cst(icst),dmg(idmg),team(iteam)
             {
                 circle.setFillColor(teams.get_team_color(team));
-                circle.setOrigin(isz/2,isz/2);
+                circle.setOrigin(isz,isz);
             }
 
             //Default constructor
