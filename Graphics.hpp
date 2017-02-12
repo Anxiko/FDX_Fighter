@@ -42,7 +42,7 @@
 /* Includes */
 
 //Physics resources
-#include "Physics.hpp"
+#include "FDX_Geo/FDX_Geo.hpp"
 
 //Spaceships
 #include "Ships.hpp"
@@ -901,7 +901,7 @@ namespace fdx { namespace fighter
                     {
                         const Target* t=*it;
                         cir.setFillColor(teams.get_team_color(t->team()));
-                        arrow::Vct r(t->crl().get_center()-c);
+                        arrow::Vct r(t->shp().get_pos_center()-c);
                         if (r.mod()>DEF_RAD_RANGE)
                             r.limmod(DEF_RAD_RANGE);
 

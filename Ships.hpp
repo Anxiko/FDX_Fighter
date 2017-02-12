@@ -42,7 +42,7 @@
 /* Includes */
 
 //Physics resources
-#include "Physics.hpp"
+#include "FDX_Geo/FDX_Geo.hpp"
 
 //Lasers
 #include "Laser.hpp"
@@ -69,6 +69,14 @@
 /*Constants*/
 
 /*Macros*/
+
+//Angle conversions
+
+//Convert from radians to degrees
+#define RAD_TO_DEG(rad) (rad*(180/PI))
+
+//Convert from degrees to radians
+#define DEG_TO_RAD(deg) (deg*(PI/180))
 
 namespace fdx { namespace fighter
 {
@@ -460,7 +468,7 @@ namespace fdx { namespace fighter
         private:
 
             //Spaceship
-            Crl shield;//Circular shield of the ship
+            arrow::Crl shield;//Circular shield of the ship
             sf::Sprite sp;//Spaceship's sprite
             sf::Sprite fr;//Fire's sprite
 
@@ -546,7 +554,7 @@ namespace fdx { namespace fighter
                 sf::Vector2u txture_sz=txture.getSize();
                 sp.setTexture(txture);
                 sp.setOrigin(txture_sz.x*0.5,txture_sz.y*0.5);
-                sp.setPosition(shield.get_center().x,shield.get_center().y);
+                sp.setPosition(shield.get_pos_center().x,shield.get_pos_center().y);
             }
 
         public:
@@ -593,7 +601,7 @@ namespace fdx { namespace fighter
             //Get the center of the spaceship
             arrow::Vct get_center() const
             {
-                return shield.get_center();
+                return shield.get_pos_center();
             }
 
             //Get the tip of the laser
@@ -656,8 +664,8 @@ namespace fdx { namespace fighter
             void revive_at (const arrow::Vct &nr)
             {
                 e.revive();
-                shield.set_center(nr);
-                sp.setPosition(shield.get_center().x,shield.get_center().y);
+                shield.set_pos_center(nr);
+                sp.setPosition(shield.get_pos_center().x,shield.get_pos_center().y);
                 mov(0);
             }
 
@@ -708,7 +716,7 @@ namespace fdx { namespace fighter
             void fire()
             {
                 if ((weapon)&&(weapon->ready()))
-                    weapon->fire(shield.get_center(),dir,shield.get_size());
+                    weapon->fire(shield.get_pos_center(),dir,shield.get_size());
             }
 
             //Take damage
@@ -763,7 +771,7 @@ namespace fdx { namespace fighter
             {
                 if (prop)
                 {
-                    prop->set_position(shield.get_center(),dir,shield.get_size());
+                    prop->set_position(shield.get_pos_center(),dir,shield.get_size());
                     prop->set_size(get_a_perc(),tick);
                 }
             }
@@ -795,7 +803,7 @@ namespace fdx { namespace fighter
             }
 
             //Return the shape
-            const Crl& crl() const
+            const arrow::Shp& shp() const
             {
                 return shield;
             }

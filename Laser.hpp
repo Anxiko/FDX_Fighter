@@ -42,8 +42,8 @@
 
 /* Includes */
 
-//Physics resources
-#include "Physics.hpp"
+//Shapes and physics
+#include "FDX_Geo/FDX_Geo.hpp"
 
 //SFML graphics
 #include "SFML/Graphics.hpp"
@@ -196,8 +196,8 @@ namespace fdx { namespace fighter
             //Speed of the laser
             arrow::Vct v;
 
-            //Position of the laser
-            Pnt r;
+            //Shape of the laser
+            arrow::Crl r;
 
             //Time that this laser has been alive (updated when moving the laser)
             long unsigned int talive=0;
@@ -213,7 +213,7 @@ namespace fdx { namespace fighter
 
             //Complete constructor
             Laser(const arrow::Vct& iv, const arrow::Vct& ir, const Laser_Model& ilm)
-            :lm(ilm),v(iv),r(ir)
+            :lm(ilm),v(iv),r(ir,ilm.get_s())
             {}
 
             //Laser model constructor
@@ -235,14 +235,14 @@ namespace fdx { namespace fighter
             //Get the position
             arrow::Vct get_r() const
             {
-                return r.get_center();
+                return r.get_pos_center();
             }
 
         /*Collision, damage*/
         public:
 
             //Time that will take to this laser to hit the circle (negative if the laser will miss)
-            arrow::Vct::Mod tth (const Crl &ic, arrow::Vct::Mod scale=1.0) const
+            arrow::Vct::Mod tth (const arrow::Shp &ic, arrow::Vct::Mod scale=1.0) const
             {
                 return r.tth(ic,v*scale);
             }
@@ -537,7 +537,7 @@ namespace fdx { namespace fighter
             virtual void dmg(int d) = 0;
 
             //Return the shape
-            virtual const Crl& crl() const = 0;
+            virtual const arrow::Shp& shp() const = 0;
 
             //Return the team
             virtual Team team() const = 0;

@@ -75,7 +75,7 @@ namespace fdx{ namespace fighter
         if (!alive)
             return;
 
-        r.mov_center(v*static_cast<arrow::Vct::Mod>(tick));
+        r.mov(v*static_cast<arrow::Vct::Mod>(tick));
         talive+=tick;
         if (talive>=lm.get_TTL())
             alive=false;
@@ -91,7 +91,7 @@ namespace fdx{ namespace fighter
             return false;
 
         //Get the time of collision
-        arrow::Vct::Mod t=tth(tar.crl(),tick);
+        arrow::Vct::Mod t=tth(tar.shp(),tick);
 
         //Check if it will hit
         if (t<0||t>1)//No hit in this movement

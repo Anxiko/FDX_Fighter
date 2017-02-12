@@ -111,7 +111,7 @@ namespace fdx { namespace fighter
 
         sf::CircleShape circle;
         circle.setOrigin(shield.get_size(),shield.get_size());
-        circle.setPosition(shield.get_center().x,shield.get_center().y);
+        circle.setPosition(shield.get_pos_center().x,shield.get_pos_center().y);
         circle.setRadius(shield.get_size());
         sf::Color tc=teams.get_team_color(t);
         tc.a=127;
@@ -164,7 +164,7 @@ namespace fdx { namespace fighter
         //Turn the ship to its objective
 
         //Get the new direction
-        arrow::Vct new_dir(crosshair-shield.get_center());//New direction that the spaceship should have
+        arrow::Vct new_dir(crosshair-shield.get_pos_center());//New direction that the spaceship should have
         if (!new_dir)//Give a value to new_dir if it's null
             new_dir=arrow::Vct::mk_ang_mod(DEF_DIR,1.0);
         else//If the new_dir is not null, make it unitary
@@ -213,8 +213,8 @@ namespace fdx { namespace fighter
         //Move the ship
         if (s)
         {
-            shield.mov_center(s*(static_cast<arrow::Vct::Mod>(tick)));
-            sp.setPosition(shield.get_center().x,shield.get_center().y);
+            shield.mov(s*(static_cast<arrow::Vct::Mod>(tick)));
+            sp.setPosition(shield.get_pos_center().x,shield.get_pos_center().y);
         }
 
         //Friction
