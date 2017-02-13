@@ -330,7 +330,7 @@ namespace fdx { namespace fighter
             //Check if the cannon is ready to fire
             bool ready() const
             {
-                return ((lasers)&&(power)&&(power->get_value()>(static_cast<int>(lm.get_dmg())))&&(refresh.full()));
+                return ((lasers)&&(power)&&(power->get_value()>(static_cast<int>(lm.get_cst())))&&(refresh.full()));
             }
 
             //Update the refresh with the given ticks
