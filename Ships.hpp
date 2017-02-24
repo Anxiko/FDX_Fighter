@@ -416,12 +416,8 @@ namespace fdx { namespace fighter
             void draw(sf::RenderTarget& target, sf::RenderStates states) const
             {
                 sf::ConvexShape shape(3);
-                sf::CircleShape cir(10);
-
-                cir.setOrigin(10,10);
-                cir.setFillColor(teams.get_enemy());
-
                 shape.setFillColor(teams.get_enemy());
+
                 for (auto it=damages.begin();it!=damages.end();++it)
                 {
                     arrow::Vct t=arrow::Vct::mk_ang_mod(*it,1);
@@ -436,10 +432,9 @@ namespace fdx { namespace fighter
                     shape.setPoint(0,sf::Vector2f(p1.x,p1.y));
                     shape.setPoint(1,sf::Vector2f(p2.x,p2.y));
                     shape.setPoint(2,sf::Vector2f(p3.x,p3.y));
+                    shape.setOrigin(-c.x,-c.y);
 
-                    cir.setPosition(c.x+p.x,c.y+p.y);
-                    //target.draw(shape,states);
-                    target.draw(cir,states);
+                    target.draw(shape,states);
                 }
             }
 
